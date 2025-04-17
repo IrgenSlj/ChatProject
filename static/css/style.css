@@ -1,0 +1,504 @@
+/* static/chat/css/style.css */
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #7BD9F6;
+    --secondary-color: #e0f6fe;
+    --danger-color: #f68691;
+    --primary-text: #00ADF2;
+    --accent-color: #009AEE;
+    --white: #f4feff;
+    --light-bg: #eef7fa;
+    --hover-bg: #e9ecef;
+    --muted-text: #00BFFF;
+}
+
+/* General Styles */
+body {
+    font-family: 'Tahoma', tahoma;
+    background-color: var(--light-bg);
+    color: var(--primary-text);
+    line-height: 1.6;
+    min-height: 100vh;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+}
+
+.main-content {
+    max-width: 1400px;
+    margin-left: 100px;
+    margin-right: 100px;
+    padding: 2rem 0;
+    text-align: left;
+}
+
+@media (max-width: 900px) {
+    .main-content {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
+.page-wrapper {
+    max-width: 1400px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+@media (max-width: 900px) {
+    .page-wrapper {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
+/* Headings and Text */
+h1, h2, h3 {
+    color: var(--primary-text);
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.chapter-title,
+.manifesto-paragraph,
+.toggle-icon {
+    color: var(--primary-text);
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+
+a {
+    color: var(--primary-text);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--primary-color);
+}
+
+/* Chat Room Styles */
+#chat-area {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: var(--white);
+    border-radius: 5px;
+    overflow-y: auto;
+    max-height: 300px;
+}
+
+#chat-area p {
+    margin-bottom: 10px;
+    color: var(--muted-text);
+}
+
+#chat-area strong {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="text"],
+textarea {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--white);
+    color: var(--primary-color);
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+button[type="submit"] {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--primary-text);
+    color: var(--primary-color);
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--accent-color);
+}
+
+/* Link Styles */
+a {
+    color: var(--primary-text);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--primary-color);
+}
+
+/* List Styles */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+/* Page Layout Components */
+.welcome-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+/* Typography */
+.section-title {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin: 1.5rem 0;
+}
+
+/* User Dashboard */
+.user-dashboard {
+    width: 100%;
+    background: var(--white);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.welcome-message {
+    font-size: 1.2rem;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+}
+
+/* Chat Rooms */
+.chat-rooms {
+    background: var(--light-bg);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+}
+
+.room-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.room-item {
+    margin: 0.5rem 0;
+}
+
+.room-link {
+    display: block;
+    padding: 0.75rem 1rem;
+    background: var(--white);
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--primary-text);
+    transition: all 0.2s ease;
+}
+
+.room-link:hover {
+    background: var(--hover-bg);
+    transform: translateY(-2px);
+}
+
+/* Navigation */
+.nav-links {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+/* Buttons */
+.btn {
+    padding: 0.5rem 1rem; /* Reduce padding */
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+    background: var(--primary-text);
+    color: var(--primary-color);
+    border: none;
+    text-align: left;
+    font-size: 0.75rem; /* Reduce button text size by 25% */
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+/* Authentication */
+.auth-prompt {
+    margin-top: 2rem;
+}
+
+.auth-message {
+    font-size: 1.1rem;
+}
+
+.auth-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+/* Auth Section */
+.auth-section {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+/* Utility Classes */
+.no-rooms {
+    color: var(--muted-text);
+    font-style: italic;
+}
+
+/* Typing Animation */
+.typing-text {
+    position: relative;
+    display: inline-block;
+    font-size: 1.875rem; /* 2.5rem * 0.75 */
+    color: var(--primary-text);
+    padding: 0.5rem 0;
+    min-width: 300px;
+    text-align: left;
+    background: none;
+}
+
+.typing-text::after {
+    display: none !important;
+}
+
+.typing-text.finished::after {
+    display: none;
+}
+
+@keyframes blinking-cursor {
+    0%, 100% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Manifesto Styles */
+.manifesto-section {
+    max-width: 800px;
+    margin: 2rem 0;
+    padding: 2rem 0;
+    background: none;
+    border-radius: 0;
+    backdrop-filter: none;
+    text-align: left;
+    margin-left: 0;
+}
+
+.manifesto-title {
+    font-size: 1.8rem;
+    color: var(--primary-text);
+    margin-bottom: 2rem;
+    text-align: left;
+    line-height: 1.4;
+    font-weight: 400;
+    background: none;
+}
+
+.manifesto-paragraph {
+    color: var(--primary-text);
+    margin: 0 0 1.5rem 0;
+    line-height: 1.6;
+    opacity: 0.9;
+    font-weight: 400;
+    background: none;
+}
+
+/* Manifesto Chapter Styles */
+.manifesto-chapter {
+    margin-bottom: 1rem;
+    border-radius: 0;
+    background: none;
+}
+
+.chapter-toggle {
+    width: 100%;
+    padding: 1rem 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: var(--primary-text);
+    outline: none;
+    text-align: left;
+}
+
+.chapter-title {
+    font-size: 1.2rem;
+    color: var(--primary-text);
+    background: none;
+    font-weight: 400;
+    margin-right: 1rem;
+}
+
+.toggle-icon {
+    font-size: 1.5rem;
+    color: var(--primary-text);
+    transition: transform 0.3s ease;
+    font-weight: 400;
+}
+
+.chapter-content {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease-out;
+    padding: 0;
+    pointer-events: none;
+    visibility: hidden;
+    /* Remove position: absolute; */
+}
+
+.chapter-content.active {
+    max-height: 1000px;
+    opacity: 1;
+    padding: 1rem 0;
+    pointer-events: auto;
+    visibility: visible;
+    /* Remove position: relative; */
+}
+
+.chapter-toggle.active .toggle-icon {
+    transform: rotate(45deg);
+}
+
+/* Add responsive styles */
+@media (max-width: 768px) {
+    .manifesto-section {
+        padding: 1.5rem 0;
+        margin: 1rem 0;
+    }
+
+    .manifesto-title {
+        font-size: 1.5rem;
+    }
+
+    .manifesto-paragraph {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .main-content {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
+/* Site Header */
+.site-header {
+    width: 100vw;
+    min-width: 100%;
+    background: transparent; /* Transparent bar */
+    box-shadow: none;        /* Remove shadow if you want */
+    padding: 0;
+    margin: 0 0 2rem 0;
+    position: relative;
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 0 auto;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+@media (max-width: 900px) {
+    .header-inner {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
+.main-title {
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: var(--primary-text);
+    margin: 0;
+    padding: 0;
+    background: none;
+    text-align: left;
+    line-height: 1.1;
+}
+
+/* Register Form */
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    max-width: 350px;
+    margin: 2rem auto;
+    background: var(--white);
+    padding: 2rem 2rem 1.5rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+
+.register-form input[type="text"],
+.register-form input[type="password"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    background: var(--light-bg);
+    color: var(--primary-text);
+    box-sizing: border-box;
+}
+
+.register-form input::placeholder {
+    color: var(--muted-text);
+    opacity: 1;
+    font-size: 0.95rem;
+}
+
+.register-form .btn {
+    width: 100%;
+    margin-top: 0.5rem;
+}

@@ -1,0 +1,119 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Chatter{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    {% block content %}{% endblock %}
+    <script>
+        class TypeWriter {
+            constructor(element) {
+                this.element = element;
+                this.firstText = element.dataset.firstText;
+                this.secondText = element.dataset.secondText;
+                this.firstLetter = this.firstText[0];
+                this.currentText = this.firstLetter;
+                this.element.textContent = this.currentText;
+                this.isDeleting = false;
+                this.isFirstText = true;
+                this.isComplete = false;
+                this.typingSpeed = 70;  // Typing speed
+                this.deletingSpeed = 25; // Deleting speed
+                this.type();
+            }
+
+            type() {
+                if (this.isComplete) return;
+                
+                const text = this.isFirstText ? this.firstText : this.secondText;
+                
+                if (this.isDeleting) {
+                    this.currentText = text.substring(0, Math.max(1, this.currentText.length - 1));
+                } else {
+                    this.currentText = text.substring(0, this.currentText.length + 1);
+                }
+
+                this.element.textContent = this.currentText;
+
+                let typeSpeed = this.isDeleting ? this.deletingSpeed : this.typingSpeed;
+
+                if (!this.isDeleting && this.currentText === text) {
+                    if (!this.isFirstText) {
+                        this.isComplete = true;
+                        this.element.classList.add('finished');
+                        return;
+                    }
+                    this.isDeleting = true;
+                    typeSpeed = this.deletingSpeed; // Remove pause at end
+                } else if (this.isDeleting && this.currentText === this.firstLetter) {
+                    this.isDeleting = false;
+                    this.isFirstText = false;
+                    typeSpeed = this.typingSpeed; // Remove pause before second text
+                }
+
+                setTimeout(() => this.type(), typeSpeed);
+            }
+        }
+
+        // Start animation immediately
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initTypeWriter);
+        } else {
+            initTypeWriter();
+        }
+
+        function initTypeWriter() {
+            const element = document.querySelector('.typing-text');
+            if (element) {
+                new TypeWriter(element);
+            }
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial hide of all content
+            document.querySelectorAll('.chapter-content').forEach(content => {
+                content.style.maxHeight = '0';
+                content.style.opacity = '0';
+                content.style.visibility = 'hidden';
+                content.style.position = 'absolute';
+            });
+
+            const toggleButtons = document.querySelectorAll('.chapter-toggle');
+            
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    const isActive = this.classList.contains('active');
+
+                    // Close all sections
+                    document.querySelectorAll('.chapter-toggle').forEach(btn => {
+                        btn.classList.remove('active');
+                        const btnContent = btn.nextElementSibling;
+                        btnContent.classList.remove('active');
+                        btnContent.style.maxHeight = '0';
+                        btnContent.style.opacity = '0';
+                        btnContent.style.visibility = 'hidden';
+                        btnContent.style.position = 'absolute';
+                    });
+
+                    // Open clicked section
+                    if (!isActive) {
+                        this.classList.add('active');
+                        content.classList.add('active');
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        content.style.opacity = '1';
+                        content.style.visibility = 'visible';
+                        content.style.position = 'relative';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

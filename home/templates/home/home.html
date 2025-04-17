@@ -1,0 +1,20 @@
+{% extends 'chat/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="welcome-section">
+    <div class="manifesto-section">
+        {% for section in manifesto_sections %}
+            <div class="manifesto-chapter">
+                <div class="chapter-toggle">
+                    <h3 class="chapter-title">{{ section.title }}</h3>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="chapter-content">
+                    <p class="manifesto-paragraph">{{ section.content }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

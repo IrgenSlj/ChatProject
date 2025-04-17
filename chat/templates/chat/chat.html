@@ -1,0 +1,17 @@
+{% extends 'base.html' %}  {# Extend the common base template #}
+
+{% block title %}Chat Rooms{% endblock %}  {# Override the title block #}
+
+{% block content %}
+    <h1>Chat Rooms</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="room_name" placeholder="New room name">
+        <button type="submit">Create Room</button>
+    </form>
+    <ul>
+        {% for room in chat_rooms %}
+            <li><a href="{% url 'chat_room' room.id %}">{{ room.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

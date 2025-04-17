@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Chat Room: {{ chat_room.name }}</h1>
+    <div id="chat-area">
+        {# Messages will be displayed here #}
+    </div>
+    <form id="message-form">
+        {% csrf_token %}
+        <input type="hidden" id="chat-room-id" value="{{ chat_room.id }}">
+        <textarea id="message-content" name="content"></textarea>
+        <button type="submit">Send</button>
+    </form>
+    <script>
+        // JavaScript (similar to before, but adapted for chat rooms)
+        const messageForm = document.getElementById('message-form');
+        const chatArea = document.getElementById('chat-area');
+        const chatRoomId = document.getElementById('chat-room-id').value;
+
+        messageForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const content = document.getElementById('message-content').value;
+            const response = await fetch('/chat/send_message/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ chat_room_id: chatRoomId, content: content })
+            });
+
+            if (response.ok) {
+                document.getElementById('message-content').value = '';
+                loadMessages();
+            } else {
+                alert('Error sending message.');
+            }
+        });
+
+        async function loadMessages() {
+            const response = await fetch(`/chat/get_messages/${chatRoomId}/`);
+            const messages = await response.json();
+
+            let messageHTML = '';
+            messages.forEach(message => {
+                messageHTML += `<p><strong>${message.sender}:</strong> ${message.content}</p>`;
+            });
+            chatArea.innerHTML = messageHTML;
+        }
+
+        loadMessages(); // Load initial messages
+    </script>
+{% endblock %}
