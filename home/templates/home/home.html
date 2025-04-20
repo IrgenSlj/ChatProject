@@ -2,19 +2,16 @@
 {% load static %}
 
 {% block content %}
-<div class="welcome-section">
-    <div class="manifesto-section">
-        {% for section in manifesto_sections %}
-            <div class="manifesto-chapter">
-                <div class="chapter-toggle">
-                    <h3 class="chapter-title">{{ section.title }}</h3>
-                    <span class="toggle-icon">+</span>
-                </div>
-                <div class="chapter-content">
-                    <p class="manifesto-paragraph">{{ section.content }}</p>
-                </div>
-            </div>
-        {% endfor %}
+<body id="home-page">
+    <div class="logo-bar container">
+        <img src="{% static 'images/AI4U Logo-01.png' %}" alt="AI4U Logo" class="main-logo">
     </div>
-</div>
+    <div class="main-content container">
+        <div class="welcome-section">
+            <div class="summary-section">
+                <span class="summary-typing-text" data-summary="{{ summary_text|escapejs }}"></span>
+            </div>
+        </div>
+    </div>
+</body>
 {% endblock %}

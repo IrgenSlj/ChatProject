@@ -1,0 +1,16 @@
+{% extends 'chat/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="main-content container">
+    <pre class="manifesto-paragraph">
+{% for line in manifesto_text.splitlines %}
+{% if line|slice:":1" == "." %}
+<span class="dot-title">{{ line }}</span>
+{% else %}
+{{ line }}
+{% endif %}
+{% endfor %}
+    </pre>
+</div>
+{% endblock %}

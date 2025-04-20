@@ -1,33 +1,13 @@
-from django.shortcuts import render
 import os
+from django.conf import settings
+from django.shortcuts import render
 
-def home_view(request):
-    manifesto_path = os.path.join('static', 'text', 'Manifesto.txt')
-    manifesto_sections = []
-    
+def home(request):
+    summary_path = os.path.join(settings.BASE_DIR, 'static', 'text', 'summary.txt')
+    summary_text = ""
     try:
-        with open(manifesto_path, 'r', encoding='utf-8') as file:
-            content = file.read()
-            # Split the content into sections (split by lines starting with dot)
-            sections = content.split('\n.')
-            
-            for section in sections:
-                if section.strip():  # Skip empty sections
-                    # Split each section into title and content
-                    lines = section.strip().split('\n\n', 1)
-                    if len(lines) == 2:
-                        title = lines[0].strip('.')  # Remove any remaining dots
-                        content = lines[1].strip()
-                        manifesto_sections.append({
-                            'title': title,
-                            'content': content
-                        })
-
+        with open(summary_path, encoding='utf-8') as f:
+            summary_text = f.read()
     except FileNotFoundError:
-        manifesto_sections = [{'title': 'Manifesto text not found', 'content': ''}]
-
-    context = {
-        'manifesto_sections': manifesto_sections
-    }
-    
-    return render(request, 'home/home.html', context)
+        summary_text = "Summary not available."
+    return render(request, 'home/home.html', {'summary_text': summary_text})

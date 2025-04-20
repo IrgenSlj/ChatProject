@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db import models
 import os
+from django.conf import settings
 
 # LLM setup
 from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
@@ -88,3 +89,15 @@ def my_view(request):
     model = tf.keras.models.load_model('my_model.h5')
     # ... more code ...
     return render(request, 'my_template.html')
+
+def manifesto(request):
+    manifesto_path = os.path.join(settings.BASE_DIR, 'static', 'text', 'manifesto.txt')
+    manifesto_text = ""
+    try:
+        with open(manifesto_path, encoding='utf-8') as f:
+            manifesto_text = f.read()
+    except FileNotFoundError:
+        manifesto_text = "Manifesto not available."
+    print("MANIFESTO PATH:", manifesto_path)
+    print("MANIFESTO TEXT:", manifesto_text)
+    return render(request, 'chat/manifesto.html', {'manifesto_text': manifesto_text})

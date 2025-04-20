@@ -7,21 +7,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI for Urbanity</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 </head>
-<body>
+<body id="{% if request.resolver_match.url_name == 'home' %}home-page{% endif %}">
     <div class="page-wrapper">
         <header class="site-header">
-            <div class="header-inner">
+            <div class="header-inner container">
                 <h1 class="main-title">
-                    <span class="typing-text" data-first-text="Artificial Intelligence for Urbanity   :)   " data-second-text="AI for Urbanity"></span>
+                    <a href="{% url 'home' %}" class="main-title-link">
+                        <span class="typing-text" data-first-text="Artificial Intelligence for Urbanity  " data-second-text="AI for Urbanity"></span>
+                    </a>
                 </h1>
                 <div class="auth-section">
-                    {% if not user.is_authenticated %}
+                    {% if user.is_authenticated %}
+                        <span class="welcome-user">Hello, {{ user.username }}</span>
+                        <a href="{% url 'manifesto' %}" class="btn btn-secondary">Manifesto</a>
+                        <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
+                    {% else %}
+                        <a href="{% url 'manifesto' %}" class="btn btn-secondary">Manifesto</a>
                         <a href="{% url 'login' %}" class="btn btn-primary">Sign in</a>
                         <a href="{% url 'register' %}" class="btn btn-secondary">Sign up</a>
-                    {% else %}
-                        <span class="welcome-user">Hello, {{ user.username }}</span>
-                        <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
                     {% endif %}
                 </div>
             </div>
@@ -33,12 +38,23 @@
     </div>
     <script>
     document.addEventListener("DOMContentLoaded", function() {
+        // Only run animation on home page
+        if (!document.body.id || document.body.id !== "home-page") {
+            // On other pages, show the static second text
+            const el = document.querySelector('.typing-text');
+            if (el) {
+                el.textContent = el.dataset.secondText || "";
+            }
+            return;
+        }
+
+        // Animation for home page
         const el = document.querySelector('.typing-text');
         if (!el) return;
         const first = el.dataset.firstText || "";
         const second = el.dataset.secondText || "";
-        let i = 1; // Start from 1 to always show the first letter
-        let phase = 0; // 0: typing first, 1: erasing, 2: typing second, 3: done
+        let i = 1;
+        let phase = 0;
 
         function type() {
             if (phase === 0) {
@@ -66,7 +82,7 @@
                     i++;
                     setTimeout(type, 60);
                 } else {
-                    phase = 3; // Stop animation
+                    phase = 3;
                 }
             }
         }
@@ -87,6 +103,23 @@
                 }
             });
         });
+    });
+    </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const el = document.querySelector('.summary-typing-text');
+        if (!el) return;
+        const text = el.dataset.summary || el.textContent || "";
+        let i = 1;
+        function type() {
+            if (i <= text.length) {
+                el.textContent = text.slice(0, i);
+                i++;
+                setTimeout(type, 30);
+            }
+        }
+        el.textContent = "";
+        type();
     });
     </script>
 </body>

@@ -1,13 +1,18 @@
 {% extends 'chat/base.html' %}  {# Extend the base template #}
 
 {% block content %}
+<div class="main-content container">
     <h2>Sign up</h2>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
     <form method="post" class="register-form">
         {% csrf_token %}
-        <input type="text" name="username" placeholder="Username (letters, numbers, 3-30 chars)" required>
-        <input type="password" name="password1" placeholder="Password (8+ chars, at least 1 number)" required>
-        <input type="password" name="password2" placeholder="Confirm password" required>
+        {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Join us!</button>
     </form>
     <p>Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+</div>
 {% endblock %}
