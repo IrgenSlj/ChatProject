@@ -2,17 +2,21 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class ChatRoom(models.Model):
-    name = models.CharField(max_length=255)
-    participants = models.ManyToManyField(User, related_name='chat_rooms')
-
-    def __str__(self):
-        return self.name
+    name = models.CharField(max_length=100)
+    agent = models.CharField(
+        max_length=20,
+        choices=[
+            ("june", "June"),
+            ("ludwig", "Ludwig"),
+            ("gustav", "Gustav"),
+            ("salvador", "Salvador"),
+        ],
+        default="june"
+    )
 
 class Message(models.Model):
-    chat_room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name='messages')
-    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     content = models.TextField()
+    is_ai = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Message from {self.sender.username} in {self.chat_room.name} at {self.timestamp}"

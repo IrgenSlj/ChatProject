@@ -1,17 +1,25 @@
-{% extends 'base.html' %}  {# Extend the common base template #}
+{% extends 'chat/base.html' %}
 
-{% block title %}Chat Rooms{% endblock %}  {# Override the title block #}
+{% block title %}Chat Rooms{% endblock %}
 
 {% block content %}
+<div class="container main-content">
     <h1>Chat Rooms</h1>
-    <form method="post">
+    <form method="post" class="mb-3">
         {% csrf_token %}
-        <input type="text" name="room_name" placeholder="New room name">
-        <button type="submit">Create Room</button>
+        <div class="form-group">
+            <input type="text" name="room_name" class="form-control" placeholder="New room name" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Room</button>
     </form>
-    <ul>
+    <ul class="list-group">
         {% for room in chat_rooms %}
-            <li><a href="{% url 'chat_room' room.id %}">{{ room.name }}</a></li>
+            <li class="list-group-item">
+                <a href="{% url 'chat_room' room.id %}">{{ room.name }}</a>
+            </li>
+        {% empty %}
+            <li class="list-group-item">No chat rooms available.</li>
         {% endfor %}
     </ul>
+</div>
 {% endblock %}

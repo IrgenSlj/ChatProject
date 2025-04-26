@@ -1,53 +1,48 @@
-{% extends 'base.html' %}
+{% extends 'chat/base.html' %}
+
+{% load static %}
 
 {% block content %}
-    <h1>Chat Room: {{ chat_room.name }}</h1>
-    <div id="chat-area">
-        {# Messages will be displayed here #}
+<div class="chat-room-container">
+    <div class="chat-sidebar">
+        <div class="logo-container">
+            <img src="{% static 'images/AI4U Logo-01.png' %}" alt="AI4U Logo" class="chat-logo">
+        </div>
+        <ul class="chat-list">
+            {% for room in rooms %}
+                <li class="{% if room.id == current_room.id %}active{% endif %}">
+                    <a href="{% url 'chat_room' room.id %}">{{ room.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
-    <form id="message-form">
-        {% csrf_token %}
-        <input type="hidden" id="chat-room-id" value="{{ chat_room.id }}">
-        <textarea id="message-content" name="content"></textarea>
-        <button type="submit">Send</button>
-    </form>
-    <script>
-        // JavaScript (similar to before, but adapted for chat rooms)
-        const messageForm = document.getElementById('message-form');
-        const chatArea = document.getElementById('chat-area');
-        const chatRoomId = document.getElementById('chat-room-id').value;
-
-        messageForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const content = document.getElementById('message-content').value;
-            const response = await fetch('/chat/send_message/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({ chat_room_id: chatRoomId, content: content })
-            });
-
-            if (response.ok) {
-                document.getElementById('message-content').value = '';
-                loadMessages();
-            } else {
-                alert('Error sending message.');
-            }
-        });
-
-        async function loadMessages() {
-            const response = await fetch(`/chat/get_messages/${chatRoomId}/`);
-            const messages = await response.json();
-
-            let messageHTML = '';
-            messages.forEach(message => {
-                messageHTML += `<p><strong>${message.sender}:</strong> ${message.content}</p>`;
-            });
-            chatArea.innerHTML = messageHTML;
-        }
-
-        loadMessages(); // Load initial messages
-    </script>
+    <div class="chat-main">
+        <form id="message-form" class="chat-input-row" autocomplete="off">
+            {% csrf_token %}
+            <input type="hidden" id="chat-room-id" value="{{ room.id }}">
+            <input type="text" id="message-content" name="message" class="chat-input" placeholder="Type your message..." required>
+            <button type="submit" class="btn btn-primary chat-send-btn">Send</button>
+        </form>
+        <div id="chat-history" class="chat-history">
+            {% for message in messages %}
+                <div class="chat-message {% if message.is_ai %}ai-message{% else %}user-message{% endif %}">
+                    <strong>
+                        {% if message.is_ai %}
+                            {{ room.get_agent_display }}
+                        {% else %}
+                            {{ message.sender.username }}
+                        {% endif %}
+                    </strong>: <span class="message-text">{{ message.content }}</span>
+                    {% if message.sender == user or user.is_staff %}
+                        <form method="post" action="{% url 'delete_message' message.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this message?');">Delete</button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/chat.js' %}"></script>
 {% endblock %}

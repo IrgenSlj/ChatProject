@@ -1,8 +1,12 @@
 import os
 from django.conf import settings
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-def home(request):
+def home_view(request):
+    if request.user.is_authenticated:
+        # Redirect to the user's main chatroom or chatroom list
+        return redirect('chat_room_list')  # or 'chat_room', with appropriate args
+
     summary_path = os.path.join(settings.BASE_DIR, 'static', 'text', 'summary.txt')
     summary_text = ""
     try:

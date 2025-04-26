@@ -1,0 +1,21 @@
+{% extends 'chat/base.html' %}
+
+{% block title %}Available Chat Rooms{% endblock %}
+
+{% block content %}
+<div class="main-content container">
+    <h2>Available Chat Rooms</h2>
+    <a href="{% url 'create_chat_room' %}" class="btn btn-primary mb-3">Start a New Chat Room</a>
+    <ul class="list-group">
+        {% for room in rooms %}
+            <li class="list-group-item">
+                <a href="{% url 'chat_room' room.id %}">
+                    {{ room.name }} (Agent: {{ room.get_agent_display }})
+                </a>
+            </li>
+        {% empty %}
+            <li class="list-group-item">No chat rooms available.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
