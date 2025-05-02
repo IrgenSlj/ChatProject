@@ -16,11 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from home.views import home_view
+from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
+from home.views import home_view  # Add this import
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', home_view, name='home'),
+    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('chat/', include(('chat.urls', 'chat'), namespace="chat")),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+'''urlpatterns = [
     path('admin/', admin.site.urls),
     path('chat/', include('chat.urls')),
     path('', home_view, name='home'),  # Your home view
     path('accounts/', include('accounts.urls')),
-]
+]'''

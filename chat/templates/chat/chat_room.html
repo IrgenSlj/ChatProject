@@ -1,48 +1,191 @@
 {% extends 'chat/base.html' %}
-
 {% load static %}
 
 {% block content %}
 <div class="chat-room-container">
     <div class="chat-sidebar">
-        <div class="logo-container">
+        <div class="logo-container" id="logo-container">
             <img src="{% static 'images/AI4U Logo-01.png' %}" alt="AI4U Logo" class="chat-logo">
         </div>
         <ul class="chat-list">
             {% for room in rooms %}
                 <li class="{% if room.id == current_room.id %}active{% endif %}">
-                    <a href="{% url 'chat_room' room.id %}">{{ room.name }}</a>
+                    <a href="{% url 'chat:chat_room' room.id %}">{{ room.name }}</a>
                 </li>
             {% endfor %}
+            <a href="{% url 'chat:create_chat_room' %}" class="btn btn-primary">Create Room</a>
+            <a href="{% url 'chat:manifesto' %}" class="btn btn-info">Manifesto</a>
+            <a href="{% url 'chat:agents' %}" class="btn btn-info">Agents</a>
         </ul>
     </div>
     <div class="chat-main">
+        <!-- Add conversation controls -->
+        <div class="conversation-controls">
+            <form method="post" action="{% url 'chat:clear_conversation' room.id %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-warning" onclick="return confirm('Are you sure you want to clear this conversation?')">
+                    Clear Conversation
+                </button>
+            </form>
+        </div>
+
+        <!-- Error alert and typing indicator -->
+        <div id="error-alert" class="alert alert-danger" style="display: none;"></div>
+        
+        <!-- Add typing indicator -->
+        <div id="typing-indicator" class="typing-indicator" style="display: none;">
+            <span></span><span></span><span></span>
+        </div>
+        
         <form id="message-form" class="chat-input-row" autocomplete="off">
             {% csrf_token %}
             <input type="hidden" id="chat-room-id" value="{{ room.id }}">
             <input type="text" id="message-content" name="message" class="chat-input" placeholder="Type your message..." required>
             <button type="submit" class="btn btn-primary chat-send-btn">Send</button>
         </form>
+        <!-- Message container -->
         <div id="chat-history" class="chat-history">
-            {% for message in messages %}
-                <div class="chat-message {% if message.is_ai %}ai-message{% else %}user-message{% endif %}">
-                    <strong>
-                        {% if message.is_ai %}
-                            {{ room.get_agent_display }}
-                        {% else %}
-                            {{ message.sender.username }}
-                        {% endif %}
-                    </strong>: <span class="message-text">{{ message.content }}</span>
-                    {% if message.sender == user or user.is_staff %}
-                        <form method="post" action="{% url 'delete_message' message.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this message?');">Delete</button>
-                        </form>
+            <div class="message-container">
+                {% for message in messages %}
+                <div class="message {% if message.is_ai %}ai-message{% else %}user-message{% endif %}">
+                    {% if not message.is_ai %}
+                        <div class="message-sender">You</div>
+                    {% else %}
+                        <div class="message-sender">{{ room.agent }}</div>
+                    {% endif %}
+                    <div class="message-content">{{ message.content }}</div>
+                    {% if message.sender == request.user or request.user.is_staff %}
+                    <form method="post" action="{% url 'chat:delete_message' message.id %}" class="delete-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
                     {% endif %}
                 </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>
-<script src="{% static 'js/chat.js' %}"></script>
+
+<script>
+    $(document).ready(function() {
+        const sendMessageUrl = "{% url 'chat:send_message' %}";
+        const getAiResponseUrl = "{% url 'chat:get_ai_response' %}";
+        const getMessagesUrl = "{% url 'chat:get_messages' room.id %}";
+        const chatHistory = $('#chat-history');
+
+        // Initialize scroll position
+        function scrollToBottom() {
+            chatHistory.scrollTop(chatHistory[0].scrollHeight);
+        }
+        scrollToBottom();
+
+        // Message handling functions
+        function appendUserMessage(content) {
+            const escapedContent = escapeHtml(content);
+            const userMessage = `
+                <div class="message user-message">
+                    <div class="message-sender">You</div>
+                    <div class="message-content">${escapedContent}</div>
+                </div>`;
+            $('.message-container').append(userMessage);
+            scrollToBottom();
+        }
+
+        function appendAIMessage(content, agentName) {
+            const escapedContent = escapeHtml(content);
+            const aiMessage = `
+                <div class="message ai-message">
+                    <div class="message-sender">${agentName}</div>
+                    <div class="message-content">${escapedContent}</div>
+                </div>`;
+            $('.message-container').append(aiMessage);
+            scrollToBottom();
+        }
+
+        // Form submission handling
+        $('#message-form').on('submit', function(event) {
+            event.preventDefault();
+            const messageContent = $('#message-content').val().trim();
+            const chatRoomId = $('#chat-room-id').val();
+            
+            if (!messageContent) {
+                return;
+            }
+
+            // Show user message immediately
+            appendUserMessage(messageContent);
+            $('#message-content').val('');
+            
+            // Send message to server
+            $.ajax({
+                url: sendMessageUrl,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    chat_room_id: chatRoomId,
+                    message: messageContent
+                }),
+                success: function(response) {
+                    if (response.status === 'success') {
+                        // Get AI response
+                        flickerLogo();
+                        toggleTypingIndicator(true);
+                        getAIResponse(chatRoomId, messageContent);
+                    } else {
+                        showError("Failed to send message");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error sending message:", error);
+                    showError("Failed to send message. Please try again.");
+                }
+            });
+        });
+
+        // AI Response handling
+        function getAIResponse(chatRoomId, messageContent) {
+            $.ajax({
+                url: getAiResponseUrl,
+                type: 'GET',
+                data: {
+                    chat_room_id: chatRoomId,
+                    message: messageContent
+                },
+                success: function(data) {
+                    toggleTypingIndicator(false);
+                    if (data.status === 'success') {
+                        appendAIMessage(data.response, data.agent_name);
+                    } else {
+                        showError(data.message || "Failed to get AI response");
+                    }
+                    $('#logo-container').removeClass('flicker');
+                },
+                error: function(xhr, status, error) {
+                    toggleTypingIndicator(false);
+                    console.error("Error getting AI response:", error);
+                    showError("Failed to get AI response. Please try again.");
+                    $('#logo-container').removeClass('flicker');
+                }
+            });
+        }
+
+        // Utility functions
+        function showError(message) {
+            $('#error-alert').text(message).fadeIn().delay(3000).fadeOut();
+        }
+
+        function toggleTypingIndicator(show) {
+            $('#typing-indicator').toggle(show);
+        }
+
+        function flickerLogo() {
+            const logoContainer = $('#logo-container');
+            logoContainer.addClass('flicker');
+            setTimeout(() => {
+                logoContainer.removeClass('flicker');
+            }, 1000);
+        }
+    });
+</script>
 {% endblock %}

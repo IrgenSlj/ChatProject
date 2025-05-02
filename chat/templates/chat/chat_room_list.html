@@ -1,21 +1,17 @@
 {% extends 'chat/base.html' %}
-
-{% block title %}Available Chat Rooms{% endblock %}
+{% load static %}
 
 {% block content %}
-<div class="main-content container">
-    <h2>Available Chat Rooms</h2>
-    <a href="{% url 'create_chat_room' %}" class="btn btn-primary mb-3">Start a New Chat Room</a>
-    <ul class="list-group">
+<div class="container main-content">
+    <div class="room-controls">
+        <a href="{% url 'chat:create_chat_room' %}" class="btn btn-primary">Create New Chat Room</a>
+    </div>
+    <div class="room-list">
         {% for room in rooms %}
-            <li class="list-group-item">
-                <a href="{% url 'chat_room' room.id %}">
-                    {{ room.name }} (Agent: {{ room.get_agent_display }})
-                </a>
-            </li>
-        {% empty %}
-            <li class="list-group-item">No chat rooms available.</li>
+            <div class="room-item">
+                <a href="{% url 'chat:chat_room' room.id %}">{{ room.name }}</a>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
 </div>
 {% endblock %}

@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI for Urbanity</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.ico' %}">
 </head>
-<body id="{% if request.resolver_match.url_name == 'home' %}home-page{% endif %}">
+<body>
     <div class="page-wrapper">
         <header class="site-header">
             <div class="header-inner container">
@@ -18,18 +18,17 @@
                         <span class="typing-text" data-first-text="Artificial Intelligence for Urbanity  " data-second-text="AI for Urbanity"></span>
                     </a>
                 </h1>
-                <div class="auth-section">
+                <nav class="main-nav">
                     {% if user.is_authenticated %}
-                        <span class="welcome-user">Hello, {{ user.username }}</span>
-                        <a href="{% url 'manifesto' %}" class="btn btn-secondary">Manifesto</a>
-                        <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
+                        <a href="{% url 'chat:chat_room_list' %}" class="nav-link">Chat Rooms</a>
+                        <a href="{% url 'chat:agents' %}" class="nav-link">Agents</a>
+                        <a href="{% url 'chat:manifesto' %}" class="nav-link">Manifesto</a>
+                        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
                     {% else %}
-                        <a href="{% url 'agents' %}" class="btn btn-secondary">Agents</a>
-                        <a href="{% url 'manifesto' %}" class="btn btn-secondary">Manifesto</a>
-                        <a href="{% url 'login' %}" class="btn btn-primary">Sign in</a>
-                        <a href="{% url 'register' %}" class="btn btn-secondary">Sign up</a>
+                        <a href="{% url 'login' %}" class="nav-link">Login</a>
+                        <a href="{% url 'register' %}" class="nav-link">Register</a>
                     {% endif %}
-                </div>
+                </nav>
             </div>
         </header>
         <div class="main-content">

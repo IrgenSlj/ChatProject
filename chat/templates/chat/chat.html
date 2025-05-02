@@ -1,25 +1,28 @@
 {% extends 'chat/base.html' %}
+{% load static %}
 
 {% block title %}Chat Rooms{% endblock %}
 
 {% block content %}
-<div class="container main-content">
-    <h1>Chat Rooms</h1>
-    <form method="post" class="mb-3">
-        {% csrf_token %}
-        <div class="form-group">
-            <input type="text" name="room_name" class="form-control" placeholder="New room name" required>
+<div class="chat-room-container">
+    <div class="chat-sidebar">
+        <div class="logo-container">
+            <img src="{% static 'images/AI4U Logo-01.png' %}" alt="AI4U Logo" class="chat-logo">
         </div>
-        <button type="submit" class="btn btn-primary">Create Room</button>
-    </form>
-    <ul class="list-group">
-        {% for room in chat_rooms %}
-            <li class="list-group-item">
-                <a href="{% url 'chat_room' room.id %}">{{ room.name }}</a>
-            </li>
-        {% empty %}
-            <li class="list-group-item">No chat rooms available.</li>
-        {% endfor %}
-    </ul>
+        <div class="conversation-grid">
+            {% for room in chat_rooms %}
+                <a href="{% url 'chat_room' room.id %}" class="conversation-button">
+                    {{ room.name }}
+                </a>
+            {% empty %}
+                <p>No chat rooms available.</p>
+            {% endfor %}
+        </div>
+        <a href="{% url 'create_chat_room' %}" class="btn btn-primary">Create Room</a>
+    </div>
+    <div class="chat-main">
+        <h2 class="text-center mb-4">Available Chat Rooms</h2>
+        <p>Select a chat room to start a conversation.</p>
+    </div>
 </div>
 {% endblock %}

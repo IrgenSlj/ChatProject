@@ -8,21 +8,28 @@
 }
 
 :root {
-    --primary-color: #cfcfcf;
-    --secondary-color: #a1a1a1;
-    --danger-color: #f68691;
-    --primary-text: #2c2c2c;
-    --accent-color: #a4a4a4;
-    --white: #ffffff;
-    --light-bg: #ffffff;
-    --hover-bg: #e9ecef;
-    --muted-text: #535353;
+    /* Color Palette */
+    --background-primary: #ffffff; /* Used for main backgrounds */
+    --background-secondary: #fcfcfc; /* Used for secondary backgrounds (e.g., sidebar) */
+    --background-hover: #e9ecef; /* Used for hover backgrounds */
+    --text-primary: #000000; /* Used for main text */
+    --text-secondary: #2b2b2b; /* Used for muted or less important text */
+    --text-user-message: #333333; /* Used for user messages */
+    --accent-primary: #5f5f5f; /* Used for primary links (Bootstrap blue) */
+    --accent-secondary: #afa5a5; /* Used for accents or highlights */
+    --border-primary: #363636; /* Used for borders */
+    --element-primary: #000000; /* Used for primary elements like buttons */
+    --element-secondary: #a1a1a1; /* Used for hover states or secondary elements */
+    --element-danger: #5d5354; /* Used for error messages or delete actions */
+    --element-white: #ffffff; /* Used for white elements */
 
+    /* Layout and Sizing */
     --container-width: 1000px;
     --container-margin: 100px;
     --container-margin-mobile: 20px;
     --header-height: 70px;
 
+    /* Typography */
     --font-main: 'Tahoma', tahoma, sans-serif;
     --font-size-base: 1.1rem;
     --font-size-lg: 1.875rem;
@@ -34,21 +41,21 @@
 /* General Styles */
 body {
     font-family: var(--font-main);
-    background-color: var(--light-bg);
-    color: var(--primary-text);
+    background-color: var(--background-primary);
+    color: var(--text-primary);
     line-height: var(--line-height);
     min-height: 100vh;
     text-align: left;
 }
 
 a {
-    color: var(--primary-text);
+    color: var(--text-primary);
     text-decoration: none;
     transition: color 0.3s;
 }
 
 a:hover {
-    color: var(--primary-color);
+    color: var(--accent-primary);
 }
 
 /* Centralized Container */
@@ -97,7 +104,7 @@ a:hover {
 .main-title {
     font-size: var(--font-size-lg);
     font-weight: 600;
-    color: var(--primary-text);
+    color: var(--text-primary);
     margin: 0;
     padding: 0;
     background: none;
@@ -140,11 +147,12 @@ a:hover {
     justify-content: center;
     align-items: center;
     margin-bottom: 2rem;
+    flex-direction: column;
 }
 
 .main-logo {
-    width: 50%;
-    max-width: 600px; /* or adjust as needed */
+    width: 25%;
+    max-width: 300px;
     height: auto;
     display: block;
     margin: 0 auto;
@@ -161,7 +169,7 @@ a:hover {
 
 .manifesto-title {
     font-size: 1.8rem;
-    color: var(--primary-text);
+    color: var(--text-primary);
     margin-bottom: 2rem;
     text-align: left;
     line-height: 1.4;
@@ -172,7 +180,7 @@ a:hover {
 .manifesto-paragraph {
     font-size: var(--font-size-base);
     font-family: inherit;
-    color: var(--primary-text);
+    color: var(--text-primary);
     margin: 0;
     padding: 0;
     line-height: var(--line-height);
@@ -200,14 +208,14 @@ a:hover {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    color: var(--primary-text);
+    color: var(--text-primary);
     outline: none;
     text-align: left;
 }
 
 .chapter-title {
     font-size: var(--font-size-md);
-    color: var(--primary-text);
+    color: var(--text-primary);
     background: none;
     font-weight: 400;
     margin-right: 1rem;
@@ -215,7 +223,7 @@ a:hover {
 
 .toggle-icon {
     font-size: 1.5rem;
-    color: var(--primary-text);
+    color: var(--text-primary);
     transition: transform 0.3s ease;
     font-weight: 400;
 }
@@ -250,7 +258,7 @@ a:hover {
 .summary-typing-text {
     display: block;
     font-size: var(--font-size-md);
-    color: var(--primary-text);
+    color: var(--text-primary);
     min-height: 2.5em;
     text-align: left;
     background: none;
@@ -264,11 +272,12 @@ a:hover {
     text-decoration: none;
     font-weight: 500;
     transition: all 0.2s;
-    background: var(--primary-text);
-    color: var(--primary-color);
+    background: var(--element-primary);
+    color: var(--element-white);
     border: none;
     text-align: left;
-    font-size: 0.75rem;
+    font-size: 0.825rem; /* Increased by 10% */
+    font-weight: bold;
 }
 
 .btn:hover {
@@ -283,7 +292,7 @@ a:hover {
     gap: 1.2rem;
     max-width: 350px;
     margin: 2rem auto;
-    background: var(--white);
+    background: var(--background-primary);
     padding: 2rem 2rem 1.5rem 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.04);
@@ -295,16 +304,16 @@ a:hover {
     width: 150%;
     max-width: 525px;
     padding: 0.75rem 1rem;
-    border: 1px solid var(--primary-color);
+    border: 1px solid var(--border-primary);
     border-radius: 4px;
     font-size: 1rem;
-    background: var(--light-bg);
-    color: var(--primary-text);
+    background: var(--background-light);
+    color: var(--text-primary);
     box-sizing: border-box;
 }
 
 .register-form input::placeholder {
-    color: var(--muted-text);
+    color: var(--text-secondary);
     opacity: 1;
     font-size: 0.95rem;
 }
@@ -316,7 +325,7 @@ a:hover {
 
 /* Alerts */
 .alert {
-    color: #f65050;
+    color: var(--element-danger);
     background: none;
     border: none;
     padding: 0.5rem 0;
@@ -336,14 +345,15 @@ a:hover {
     }
 }
 
+/* Chat Room Styles */
 .chat-room-container {
     display: flex;
     min-height: 80vh;
 }
 .chat-sidebar {
     width: 220px;
-    background: #f8f9fa;
-    border-right: 1px solid #ddd;
+    background: var(--background-secondary);
+    border-right: 1px solid var(--border-primary);
     padding: 1em 0;
     display: flex;
     flex-direction: column;
@@ -369,7 +379,7 @@ a:hover {
 }
 .chat-list li.active a {
     font-weight: bold;
-    color: #007bff;
+    color: var(--accent-primary);
 }
 .chat-main {
     flex: 1;
@@ -381,25 +391,38 @@ a:hover {
 .chat-input-row {
     display: flex;
     width: 100%;
-    max-width: 600px;
-    margin: 0 auto 1em auto;
+    max-width: 600px; /* Adjust as needed */
+    margin: 0 auto;
 }
+
 .chat-input {
     flex: 1;
     padding: 0.75em;
     font-size: 1.1em;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-primary);
     border-radius: 4px 0 0 4px;
 }
+
 .chat-send-btn {
     border-radius: 0 4px 4px 0;
     padding: 0 1.5em;
+    background-color: var(--element-primary);
+    color: var(--element-white);
+    border: none;
+    cursor: pointer;
+    font-size: 0.825rem; /* Increased by 10% */
+    font-weight: bold;
 }
+
+.chat-send-btn:hover {
+    background-color: var(--element-secondary);
+}
+
 .chat-history {
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
-    background: #fff;
+    background: var(--element-white);
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     padding: 1em;
@@ -410,9 +433,46 @@ a:hover {
     margin-bottom: 1em;
 }
 .ai-message .message-text {
-    color: #007bff;
+    color: var(--accent-primary);
     font-style: italic;
 }
 .user-message .message-text {
-    color: #333;
+    color: var(--text-user-message);
+}
+
+/* Conversation Grid */
+.conversation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.conversation-grid button {
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--element-primary);  /* Changed to match theme */
+    color: var(--element-white);               /* Added for white text */
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;                      /* Changed to match other buttons */
+    font-size: 0.825rem;
+    font-weight: bold;
+    aspect-ratio: 3 / 2;
+}
+
+.conversation-grid button:hover {
+    transform: translateY(-2px);               /* Added to match other buttons */
+    opacity: 0.9;                             /* Added to match other buttons */
+    background-color: var(--element-primary); /* Changed to maintain black bg */
+}
+
+/* Create Room Styles */
+.create-room-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh; /* Adjust as needed */
 }
