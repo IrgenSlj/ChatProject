@@ -25,13 +25,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_view, name='home'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('accounts.urls')),
     path('chat/', include(('chat.urls', 'chat'), namespace="chat")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-'''urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('chat/', include('chat.urls')),
-    path('', home_view, name='home'),  # Your home view
-    path('accounts/', include('accounts.urls')),
-]'''
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]

@@ -1,15 +1,29 @@
 # Django
+*.log
+*.pot
 *.pyc
-__pycache__
+__pycache__/
+local_settings.py
 db.sqlite3
-.env
 media/
-static/vendor/
+
+# Environment
+.env
+.venv/
+env/
+
+# IDE
+.vscode/
+*.swp
+
+
+
+
+
+
+logs/mediafiles/staticfiles/# Production*.swo*.swo
+
+# Production
+staticfiles/
+mediafiles/
 logs/
-
-# VS Code
-.vscode
-
-# OS
-.DS_Store
-Thumbs.db
