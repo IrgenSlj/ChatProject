@@ -11,7 +11,7 @@ import os
 import logging
 from django.utils.html import escape
 from .ai_agents import get_agent_response, AGENT_CONFIGS
-
+ 
 logger = logging.getLogger('chat')
 
 # --- Utility for conversation context ---

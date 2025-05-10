@@ -476,3 +476,30 @@ a:hover {
     align-items: center;
     min-height: 50vh; /* Adjust as needed */
 }
+
+/* Navigation Link Styles */
+.nav-link {
+    font-weight: bold;
+    color: var(--text-primary);
+    background: none;
+    border: none;
+    padding: 0.3rem 0.3rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: color 0.2s, background 0.2s;
+    text-decoration: none;
+    display: inline-block;
+    outline: none;
+    /* Add these lines to normalize button appearance */
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 0;
+    box-shadow: none;
+    font-family: inherit;
+    line-height: normal;
+    vertical-align: middle;
+}
+.nav-link:hover {
+    color: var(--accent-primary);
+    background: transparent;
+}

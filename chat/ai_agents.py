@@ -114,7 +114,7 @@ def get_agent_response(agent_name, user_message, context=None):
         if context:
             prompt += f"\nPrevious conversation:\n{context}"
         prompt += f"\nUser: {user_message}\n{config['name']}:"
-    
+
     try:
         # Generate response
         result = pipe(prompt, 
