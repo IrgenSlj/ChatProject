@@ -19,6 +19,8 @@ INSTALLED_APPS = [
     'chat.apps.ChatConfig',
     'home.apps.HomeConfig',
     'accounts.apps.AccountsConfig',
+    # Third-party apps
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

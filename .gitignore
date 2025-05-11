@@ -16,14 +16,41 @@ env/
 .vscode/
 *.swp
 
+# SSL Certificates
+cert.crt
+cert.key
 
-
-
-
-
-logs/mediafiles/staticfiles/# Production*.swo*.swo
-
-# Production
+# Static and Media
 staticfiles/
 mediafiles/
 logs/
+logs/
+media/
+logs/mediafiles/staticfiles/
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Test/coverage
+.coverage
+htmlcov/
+*.cover
+*.py,cover
+
+# VSCode
+.history/
+.code-workspace
+
+# Production
+*.swo
+*.swn
+*.swo
+*.swn
+
+# Misc
+*.bak
+*.tmp
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
